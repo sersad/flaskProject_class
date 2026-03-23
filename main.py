@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, abort, request
-from data import db_session
+from data import db_session, news_api
 from data.news import News
 from data.users import User
 from forms.loginform import LoginForm
@@ -190,6 +190,7 @@ def main():
     db_session.global_init("db/blogs.db")
     # init_data_users()
     # init_data_news()
+    app.register_blueprint(news_api.blueprint)
     app.run()
 
 
