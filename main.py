@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, redirect, abort, request, make_response, jsonify
 from data import db_session, news_api, news_resources
 from data.news import News
@@ -210,7 +212,8 @@ def main():
     # init_data_users()
     # init_data_news()
     app.register_blueprint(news_api.blueprint)
-    app.run()
+    port = int(os.environ.get("PORT", 80))
+    app.run(host='0.0.0.0', port=port)
 
 
 if __name__ == '__main__':

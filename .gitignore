@@ -1,6 +1,9 @@
 .venv/
 .idea/
+venv/
 .zip/
 __pycache__/
 .vscode/
 .git/
+*.gz
+*.whl
