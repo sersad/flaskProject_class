@@ -1,5 +1,5 @@
 import os
-
+import logging
 from flask import Flask, render_template, redirect, abort, request, make_response, jsonify
 from data import db_session, news_api, news_resources
 from data.news import News
@@ -10,6 +10,12 @@ from forms.user import RegisterForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_restful import reqparse, abort, Api, Resource
 
+
+logging.basicConfig(level=logging.DEBUG,
+                    filename='example.log',
+                    encoding='utf-8',
+                    format='%(asctime)s %(levelname)s %(name)s %(message)s'
+                    )
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -78,9 +84,11 @@ def load_user(user_id):
 def index():
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
+        logging.info(f"Пришел пользователь {current_user}")
         news = db_sess.query(News).filter(
             (News.user == current_user) | (News.is_private != True))
     else:
+        logging.info(f"Пришел не аутентифицированный пользователь")
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
 
